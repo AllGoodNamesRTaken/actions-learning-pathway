@@ -12,7 +12,7 @@ jobs:
       - name: Print hello_world file content
         run: echo "$(cat hello_world.txt)"
   another-hello-world-job:
-    runs-on: ubuntu-lates
+    runs-on: ubuntu-latest
     steps: 
       - name: Check out repository code
         uses: actions/checkout@v3
