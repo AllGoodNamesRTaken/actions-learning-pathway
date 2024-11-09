@@ -11,3 +11,10 @@ jobs:
         uses: actions/checkout@v3
       - name: Print hello_world file content
         run: echo "$(cat hello_world.txt)"
+  another-hello-world-job:
+    runs-on: ubuntu-lates
+    steps: 
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Print hello_world file content
+        run: echo "$(cat hello_world.txt)"
