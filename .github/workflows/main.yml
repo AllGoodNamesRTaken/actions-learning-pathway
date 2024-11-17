@@ -1,16 +1,16 @@
 name: test-buid-and-push-go-apps
 on: 
-  pull_request:
-    branches: 
-      - main
-  push:
-    branches:
-      - AllGoodNamesRTaken-patch-1
+  #pull_request:
+  #  branches: 
+  #    - main
+  #push:
+  #  branches:
+  #    - AllGoodNamesRTaken-patch-1
   workflow_dispatch:
     inputs:
       coverage_threshold:
         description: 'Set the minimum coverage percentage to trigger build'
-        required: false
+        required: true
         default: '0'
 jobs:
   test-golang-code:
