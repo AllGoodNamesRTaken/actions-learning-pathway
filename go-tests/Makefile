@@ -1,5 +1,5 @@
 test:
-		go mod download
+	go mod download
 	go mod tidy
 	go test -cover -v
 
