@@ -3,9 +3,11 @@ on:
   push:
     branches: 
       - main
+      - AllGoodNamesRTaken-patch-1
   pull_request:
     branches: 
       - main
+      - AllGoodNamesRTaken-patch-1
   workflow_dispatch:
     inputs:
       coverage_threshold:
