@@ -48,12 +48,18 @@ jobs:
     steps: 
     - name: print coverage values
       run: |
-        if [[ "${{ github.event.inputs.coverage_threshold }}" != "" ]]; then
-          echo "Coverage threshold input: ${{ fromJSON(github.event.inputs.coverage_threshold) }}"
+        if [ -n "${{ github.event.inputs.coverage_threshold }}" ]; then
+          THRESHOLD=$(echo "${{ github.event.inputs.coverage_threshold }}" | jq . || echo "invalid")
+          if [ "$THRESHOLD" != "invalid" ]; then
+            echo "Coverage threshold input: $THRESHOLD"
+          else
+            echo "Coverage threshold input is invalid JSON."
+          fi
         else
-          echo "Coverage threshold input: Not provided or invalid."
+          echo "Coverage threshold input: Not provided."
         fi
         echo "Coverage from go test is ${{ needs.test-golang-code.outputs.coverage }}"
+
     - name: checkout code 
       uses: actions/checkout@v4
     - name: build image
