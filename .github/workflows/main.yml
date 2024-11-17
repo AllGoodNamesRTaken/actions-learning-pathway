@@ -1,13 +1,8 @@
 name: test-buid-and-push-go-apps
 on: 
-  push:
-    branches: 
-      - main
-      - AllGoodNamesRTaken-patch-1
   pull_request:
     branches: 
       - main
-      - AllGoodNamesRTaken-patch-1
 #  workflow_dispatch:
 #    inputs:
 #      coverage_threshold:
@@ -18,7 +13,7 @@ jobs:
   test-golang-code:
     runs-on: ubuntu-latest
     env:  
-      GO_VERSION: "1.22.7"
+      GO_VERSION: '1.22.7'
     outputs:
       coverage: ${{ steps.test.outputs.coverage }} 
     steps:
