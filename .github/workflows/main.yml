@@ -22,7 +22,7 @@ jobs:
     - name: install go
       uses: actions/setup-go@v5
       with: 
-        go-version: $GO_VERSION
+        go-version: ${{ env.GO_VERSION }}
     - name: test coverage
       id: test
       run: |
