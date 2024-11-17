@@ -38,7 +38,7 @@ jobs:
   #some output that serves as condition for the build
   build-and-push:
     needs: test-golang-code
-    if: ${{ (github.event.inputs.coverage_threshold != '' && github.event.inputs.coverage_threshold | fromJson) >= 75 || needs.test-golang-code.outputs.coverage >= 75 }}
+    if: ${{ (github.event.inputs.coverage_threshold != '' && fromJSON(github.event.inputs.coverage_threshold) >= 75) || needs.test-golang-code.outputs.coverage >= 75 }}
     #if: ${{ needs.test-golang-code.outputs.coverage >= 75 }}
     runs-on: ubuntu-latest
     environment:
