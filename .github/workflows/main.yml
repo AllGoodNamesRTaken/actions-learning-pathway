@@ -1,0 +1,59 @@
+name: test-buid-and-push-go-apps
+on: 
+  push:
+    branches: 
+      - main
+  pull_request:
+    branches: 
+      - main
+  workflow_dispatch:
+    inputs:
+      coverage_threshold:
+        description: 'Set the minimum coverage percentage to trigger build'
+        required: false
+        default: '0'
+jobs:
+  test-golang-code:
+    runs-on: ubuntu-latest
+    env:  
+      GO_VERSION: "1.22.7"
+    outputs:
+      coverage: ${{ steps.test.outputs.coverage }} 
+    steps:
+    - name: checkout code
+      uses: actions/checkout@v4
+    - name: install go
+      uses: actions/setup-go@v5
+      with: 
+        go-version: $GO_VERSION
+    - name: test coverage
+      id: test
+      run: |
+        coverage=$(make test | grep -o 'coverage: [0-9]*\.[0-9]*' | awk '{print int($2)}')
+        echo "Coverage percentage: $coverage"
+        echo "coverage=$coverage" >> $GITHUB_OUTPUT 
+    - name: Adding markdown
+      run: |
+        echo "Coverage is ${{ steps.test.outputs.coverage }}% 🚀"
+  #some output that serves as condition for the build
+  build-and-push:
+    needs: test-golang-code
+    if: ${{ (github.event.inputs.coverage_threshold | int) >= 75 || needs.test-golang-code.outputs.coverage >= 75 }}
+    runs-on: ubuntu-latest
+    environment:
+     name: production
+    steps: 
+    - name: checkout code 
+      uses: actions/checkout@v4
+    - name: build image
+      run: |
+          make build
+    - name: docker login
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+    - name: push image
+      run: |
+          make push
+  
