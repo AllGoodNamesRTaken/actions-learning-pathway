@@ -8,12 +8,12 @@ on:
     branches: 
       - main
       - AllGoodNamesRTaken-patch-1
-  workflow_dispatch:
-    inputs:
-      coverage_threshold:
-        description: 'Set the minimum coverage percentage to trigger build'
-        required: false
-        default: '0'
+#  workflow_dispatch:
+#    inputs:
+#      coverage_threshold:
+#        description: 'Set the minimum coverage percentage to trigger build'
+#        required: false
+#        default: '0'
 jobs:
   test-golang-code:
     runs-on: ubuntu-latest
@@ -40,7 +40,8 @@ jobs:
   #some output that serves as condition for the build
   build-and-push:
     needs: test-golang-code
-    if: ${{ (github.event.inputs.coverage_threshold | int) >= 75 || needs.test-golang-code.outputs.coverage >= 75 }}
+    #if: ${{ (github.event.inputs.coverage_threshold | int) >= 75 || needs.test-golang-code.outputs.coverage >= 75 }}
+    if: ${{ needs.test-golang-code.outputs.coverage >= 75 }}
     runs-on: ubuntu-latest
     environment:
      name: production
