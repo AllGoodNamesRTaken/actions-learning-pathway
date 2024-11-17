@@ -1,6 +1,6 @@
 test:
+	go mod tidy
 	go test -cover -v
-
 build: 
 	docker build -t joserracloud/devops:my-go-app .
 push: 
